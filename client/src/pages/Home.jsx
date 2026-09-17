@@ -299,18 +299,21 @@ export default function Home() {
 
       {/* Owner CTA */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-between gap-6 rounded-3xl bg-gradient-to-br from-brand-600 to-brand-800 p-8 text-center text-white sm:flex-row sm:text-left sm:p-12">
-          <div>
-            <h2 className="font-display text-2xl font-extrabold">Have a property to rent out?</h2>
-            <p className="mt-2 max-w-md text-sm text-brand-100">
-              List your PG, flat or hostel and reach thousands of verified students actively searching near your area.
-            </p>
+        <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-ink-200 bg-white p-8 text-center sm:flex-row sm:text-left sm:p-12">
+          <div className="flex items-center gap-4">
+            <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 sm:flex">
+              <HomeIcon size={22} />
+            </div>
+            <div>
+              <h2 className="font-display text-xl font-extrabold text-ink-900">Have a property to rent out?</h2>
+              <p className="mt-1 text-sm text-ink-500">
+                List your PG, flat or hostel and reach thousands of verified students actively searching near your area.
+              </p>
+            </div>
           </div>
-          <div className="flex shrink-0 gap-3">
-            <Button as={Link} to="/signup" variant="accent" size="lg">
-              List your property
-            </Button>
-          </div>
+          <Button as={Link} to="/signup" variant="primary" size="lg" className="shrink-0">
+            List your property
+          </Button>
         </div>
       </section>
 
@@ -326,7 +329,7 @@ export default function Home() {
               <p className="mt-1 text-sm text-ink-500">Match with students near your college who share your budget and habits.</p>
             </div>
           </div>
-          <Button as={Link} to="/roommates" variant="secondary" size="lg" className="shrink-0">
+          <Button as={Link} to="/roommates" variant="primary" size="lg" className="shrink-0">
             Find Your Roomies
           </Button>
         </div>
