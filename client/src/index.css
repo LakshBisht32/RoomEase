@@ -8,22 +8,23 @@
      every heading and the wordmark. */
   --font-display: "Jost", ui-sans-serif, system-ui, sans-serif;
 
-  /* Deep teal + terracotta — a warmer, less "generic AI SaaS" pairing than
-     the indigo/violet gradients most template-generated sites default to. */
-  --color-brand-50: #f0faf8;
-  --color-brand-100: #d7f0ec;
-  --color-brand-200: #aee0d8;
-  --color-brand-300: #79c8bd;
-  --color-brand-400: #45a89b;
-  --color-brand-500: #2a8b7e;
-  --color-brand-600: #1f6f65;
-  --color-brand-700: #1c5a53;
-  --color-brand-800: #1a4844;
-  --color-brand-900: #173c39;
+  /* Deep navy + coral — a trustworthy, editorial pairing suited to a
+     real-estate/roommate-matching product; coral carries CTAs and highlights
+     against the calmer navy brand scale. */
+  --color-brand-50: #eef3f9;
+  --color-brand-100: #d7e3f0;
+  --color-brand-200: #b0c7e2;
+  --color-brand-300: #82a4cc;
+  --color-brand-400: #5b81b0;
+  --color-brand-500: #3f6390;
+  --color-brand-600: #2f4d73;
+  --color-brand-700: #263e5c;
+  --color-brand-800: #1f324a;
+  --color-brand-900: #1a2a3d;
 
-  --color-accent-400: #e6935f;
-  --color-accent-500: #d97a41;
-  --color-accent-600: #b8602e;
+  --color-accent-400: #f4805a;
+  --color-accent-500: #ea5a37;
+  --color-accent-600: #c8452a;
 
   --color-ink-50: #f8fafc;
   --color-ink-100: #f1f5f9;

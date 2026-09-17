@@ -54,7 +54,6 @@ API and the frontend run as two separate local servers — see **Getting started
 ## Getting started
 
 **Prerequisites:** Node.js, PostgreSQL, both installed and running locally.
-
 The API and the React frontend are two separate apps — run **both**, each in its own
 terminal.
 

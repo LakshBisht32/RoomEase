@@ -1,18 +1,17 @@
-// A custom doorway/arch mark — deliberately not a generic "house" pictogram.
-// Reads as "step through to your own space," which is what RoomEase actually
-// does. Kept to two strokes and a dot so it still reads clearly at 16px.
+// A minimal house mark: roofline + walls in one continuous weight, with a
+// single accent-colored door. Reads clearly at any size, no clutter.
 function Mark({ size = 36 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="32" height="32" rx="9" className="fill-brand-600" />
       <path
-        d="M10 24V15a6 6 0 0 1 12 0v9"
+        d="M8.5 17.5 16 10l7.5 7.5M11 16.5v7.5h10v-7.5"
         stroke="white"
-        strokeWidth="2.4"
+        strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <circle cx="19" cy="20" r="1.15" className="fill-accent-400" />
+      <rect x="14.4" y="18.5" width="3.2" height="5.5" rx="0.6" className="fill-accent-400" />
     </svg>
   );
 }
