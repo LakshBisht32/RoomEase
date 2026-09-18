@@ -13,6 +13,15 @@ const navLinkClass = ({ isActive }) =>
       : 'text-ink-600 hover:bg-white hover:text-brand-700 hover:shadow-sm'
   }`;
 
+const authButtonClass = ({ isActive }) =>
+  `inline-flex items-center justify-center gap-2 rounded-xl border px-3 py-1.5 text-sm font-semibold transition-all duration-150 active:scale-[0.98] ${
+    isActive
+      ? 'border-brand-600 bg-brand-600 text-white shadow-sm shadow-brand-600/30'
+      : 'border-ink-200 bg-white text-ink-700 hover:bg-ink-50'
+  }`;
+
+const mobileAuthButtonClass = ({ isActive }) => `flex-1 ${authButtonClass({ isActive })}`;
+
 const mobileLinkClass = ({ isActive }) =>
   `flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-colors ${
     isActive ? 'bg-brand-50 text-brand-700' : 'text-ink-700 hover:bg-ink-50'
@@ -73,12 +82,12 @@ export default function Navbar() {
             </div>
           ) : (
             <>
-              <Link to="/login" className="relative px-1 py-2 text-sm font-semibold text-ink-600 transition-colors hover:text-brand-700 after:absolute after:bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-brand-600 after:transition-all after:duration-200 hover:after:w-full">
+              <NavLink to="/login" className={authButtonClass}>
                 Log in
-              </Link>
-              <Button as={Link} to="/signup" size="sm">
+              </NavLink>
+              <NavLink to="/signup" className={authButtonClass}>
                 Sign up
-              </Button>
+              </NavLink>
             </>
           )}
         </div>
@@ -121,12 +130,12 @@ export default function Navbar() {
               </>
             ) : (
               <div className="mt-2 flex gap-2">
-                <Button as={Link} to="/login" variant="secondary" size="sm" className="flex-1" onClick={() => setOpen(false)}>
+                <NavLink to="/login" className={mobileAuthButtonClass} onClick={() => setOpen(false)}>
                   Log in
-                </Button>
-                <Button as={Link} to="/signup" size="sm" className="flex-1" onClick={() => setOpen(false)}>
+                </NavLink>
+                <NavLink to="/signup" className={mobileAuthButtonClass} onClick={() => setOpen(false)}>
                   Sign up
-                </Button>
+                </NavLink>
               </div>
             )}
           </div>
