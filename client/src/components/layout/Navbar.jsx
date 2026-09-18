@@ -7,8 +7,10 @@ import Logo from '../ui/Logo';
 import toast from 'react-hot-toast';
 
 const navLinkClass = ({ isActive }) =>
-  `rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${
-    isActive ? 'bg-brand-50 text-brand-700' : 'text-ink-600 hover:bg-ink-50 hover:text-brand-700'
+  `rounded-full px-3.5 py-2 text-sm font-semibold transition-all duration-150 ${
+    isActive
+      ? 'bg-brand-600 text-white shadow-sm shadow-brand-600/30'
+      : 'text-ink-600 hover:bg-white hover:text-brand-700 hover:shadow-sm'
   }`;
 
 const mobileLinkClass = ({ isActive }) =>
@@ -38,13 +40,14 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-200/70 bg-white/80 shadow-sm shadow-ink-900/[0.03] backdrop-blur-lg">
-      <div className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-40 border-b border-ink-200/70 bg-white/80 shadow-md shadow-ink-900/[0.04] backdrop-blur-lg">
+      <div className="h-[3px] bg-gradient-to-r from-brand-600 via-brand-400 to-accent-500" />
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="shrink-0 transition-transform hover:scale-[1.02]">
           <Logo size={34} wordmarkClassName="text-xl" />
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-ink-200/70 bg-ink-50/60 p-1 md:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-ink-200/70 bg-ink-50/60 p-1 shadow-inner shadow-ink-900/[0.02] md:flex">
           <NavLink to="/search" className={navLinkClass}>Browse Rooms</NavLink>
           <NavLink to="/roommates" className={navLinkClass}>Find Your Roomies</NavLink>
           {user?.role === 'owner' && <NavLink to="/dashboard/listings/new" className={navLinkClass}>List a Property</NavLink>}
@@ -58,7 +61,7 @@ export default function Navbar() {
                 to="/dashboard"
                 className="group flex items-center gap-2 rounded-full py-1 pl-1 pr-3.5 text-sm font-semibold text-ink-700 transition-colors hover:bg-ink-50"
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-xs font-bold text-white ring-2 ring-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-600 to-brand-800 text-xs font-bold text-white shadow-sm shadow-brand-600/30 ring-2 ring-white">
                   {initials(user.name) || <LayoutDashboard size={14} />}
                 </span>
                 <span className="group-hover:text-brand-700">{user.name?.split(' ')[0]}</span>
@@ -70,7 +73,7 @@ export default function Navbar() {
             </div>
           ) : (
             <>
-              <Link to="/login" className="rounded-full px-3.5 py-2 text-sm font-semibold text-ink-600 transition-colors hover:bg-ink-50 hover:text-brand-700">
+              <Link to="/login" className="relative px-1 py-2 text-sm font-semibold text-ink-600 transition-colors hover:text-brand-700 after:absolute after:bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-brand-600 after:transition-all after:duration-200 hover:after:w-full">
                 Log in
               </Link>
               <Button as={Link} to="/signup" size="sm">
@@ -107,7 +110,7 @@ export default function Navbar() {
               <>
                 <div className="my-1 h-px bg-ink-100" />
                 <NavLink onClick={() => setOpen(false)} to="/dashboard" className={mobileLinkClass}>
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-[10px] font-bold text-white">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-brand-600 to-brand-800 text-[10px] font-bold text-white">
                     {initials(user.name)}
                   </span>
                   Dashboard
