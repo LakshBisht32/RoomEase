@@ -5,7 +5,6 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { Label, Input, FieldError } from '../components/ui/Field';
 import Button from '../components/ui/Button';
-import Logo from '../components/ui/Logo';
 import { extractErrorMessage } from '../api/client';
 
 export default function Signup() {
@@ -33,9 +32,6 @@ export default function Signup() {
   return (
     <div className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-ink-50 px-4 py-12">
       <div className="w-full max-w-md rounded-2xl border border-ink-200 bg-white p-8 shadow-sm">
-        <Link to="/" className="mb-6 flex items-center justify-center">
-          <Logo size={34} wordmarkClassName="text-xl" />
-        </Link>
         <h1 className="text-center font-display text-xl font-bold text-ink-900">Create your account</h1>
         <p className="mt-1 text-center text-sm text-ink-500">Join as a student looking for a room, or an owner listing one.</p>
 
