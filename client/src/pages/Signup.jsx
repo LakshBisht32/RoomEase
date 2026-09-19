@@ -30,11 +30,12 @@ export default function Signup() {
   };
 
   return (
-    <div className="relative flex min-h-[calc(100vh-64px)] items-center justify-center overflow-hidden bg-brand-900 px-4 py-12">
-      <div className="pointer-events-none absolute -top-32 -left-24 h-96 w-96 rounded-full bg-brand-500/40 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-accent-500/30 blur-3xl" />
+    <div className="relative flex min-h-[calc(100vh-64px)] items-center justify-center overflow-hidden bg-gradient-to-br from-brand-50 via-white to-accent-50 px-4 py-12">
+      <div className="pointer-events-none absolute -top-32 -left-24 h-96 w-96 rounded-full bg-brand-200/50 blur-3xl" />
+      <div className="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full bg-brand-200/50 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -right-24 h-96 w-96 rounded-full bg-accent-200/50 blur-3xl" />
 
-      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-white p-8 shadow-2xl">
+      <div className="relative w-full max-w-md rounded-2xl border border-ink-200/70 bg-white p-8 shadow-xl shadow-ink-900/5">
         <h1 className="text-center font-display text-xl font-bold text-ink-900">Create your account</h1>
         <p className="mt-1 text-center text-sm text-ink-500">Join as a student looking for a room, or an owner listing one.</p>
 

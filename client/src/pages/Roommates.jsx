@@ -225,7 +225,11 @@ export default function Roommates() {
       <PageBackdrop className="min-h-[calc(100vh-64px)]">
         <div className="mx-auto max-w-lg px-4 py-24 text-center">
           <ShieldAlert size={36} className="mx-auto text-ink-300" />
-          <p className="mt-3 font-semibold text-ink-700">Roommate matching is available for student accounts only.</p>
+          <h1 className="mt-3 font-display text-xl font-bold text-ink-900">This page is for students</h1>
+          <p className="mt-2 text-sm text-ink-500">
+            Roommate matching helps students find compatible people to share a room with — it isn't available for owner accounts.
+          </p>
+          <Button as={Link} to="/dashboard" className="mt-5">Go to Dashboard</Button>
         </div>
       </PageBackdrop>
     );

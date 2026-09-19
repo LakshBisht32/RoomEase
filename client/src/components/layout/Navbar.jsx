@@ -10,7 +10,7 @@ const navLinkClass = ({ isActive }) =>
   `rounded-full px-3.5 py-2 text-sm font-semibold transition-all duration-150 ${
     isActive
       ? 'bg-brand-600 text-white shadow-sm shadow-brand-600/30'
-      : 'text-ink-600 hover:bg-white hover:text-brand-700 hover:shadow-sm'
+      : 'text-ink-600 hover:bg-ink-50 hover:text-brand-700 hover:shadow-sm'
   }`;
 
 const authButtonClass = ({ isActive }) =>
@@ -49,14 +49,14 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-200/70 bg-white/80 shadow-md shadow-ink-900/[0.04] backdrop-blur-lg">
+    <header className="sticky top-0 z-40 border-b border-ink-200/70 bg-ink-50/90 shadow-md shadow-ink-900/[0.04] backdrop-blur-lg">
       <div className="h-[3px] bg-gradient-to-r from-brand-600 via-brand-400 to-accent-500" />
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="shrink-0 transition-transform hover:scale-[1.02]">
           <Logo size={34} wordmarkClassName="text-xl" />
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-ink-200/70 bg-ink-50/60 p-1 shadow-inner shadow-ink-900/[0.02] md:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-ink-200/70 bg-white p-1 shadow-inner shadow-ink-900/[0.02] md:flex">
           <NavLink to="/search" className={navLinkClass}>Browse Rooms</NavLink>
           <NavLink to="/roommates" className={navLinkClass}>Find Your Roomies</NavLink>
           {user?.role === 'owner' && <NavLink to="/dashboard/listings/new" className={navLinkClass}>List a Property</NavLink>}

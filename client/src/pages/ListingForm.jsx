@@ -9,6 +9,7 @@ import { Label, Input, Select, Textarea, FieldError } from '../components/ui/Fie
 import Button from '../components/ui/Button';
 import { extractErrorMessage } from '../api/client';
 import { Link } from 'react-router-dom';
+import PageBackdrop from '../components/ui/PageBackdrop';
 
 const EMPTY_FORM = {
   title: '', description: '', rent: '', deposit: '', address: '', city: '',
@@ -31,14 +32,16 @@ export default function ListingForm() {
 
   if (user && user.kyc_status !== 'verified') {
     return (
-      <div className="mx-auto max-w-lg px-4 py-24 text-center">
-        <ShieldAlert size={36} className="mx-auto text-amber-500" />
-        <h1 className="mt-3 font-display text-xl font-bold text-ink-900">Verify your KYC first</h1>
-        <p className="mt-2 text-sm text-ink-500">
-          To keep students safe, only KYC-verified owners can publish listings.
-        </p>
-        <Button as={Link} to="/kyc" className="mt-5">Complete KYC</Button>
-      </div>
+      <PageBackdrop className="min-h-[calc(100vh-64px)]">
+        <div className="mx-auto max-w-lg px-4 py-24 text-center">
+          <ShieldAlert size={36} className="mx-auto text-amber-500" />
+          <h1 className="mt-3 font-display text-xl font-bold text-ink-900">Verify your KYC first</h1>
+          <p className="mt-2 text-sm text-ink-500">
+            To keep students safe, only KYC-verified owners can publish listings.
+          </p>
+          <Button as={Link} to="/kyc" className="mt-5">Complete KYC</Button>
+        </div>
+      </PageBackdrop>
     );
   }
 
@@ -86,6 +89,7 @@ export default function ListingForm() {
   };
 
   return (
+    <PageBackdrop className="min-h-[calc(100vh-64px)]">
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="font-display text-2xl font-extrabold text-ink-900">List a new property</h1>
       <p className="mt-1 text-sm text-ink-500">Fill in the details students care about most: location, price and what's included.</p>
@@ -207,5 +211,6 @@ export default function ListingForm() {
         <Button type="submit" className="w-full" loading={submitting}>Publish listing</Button>
       </form>
     </div>
+    </PageBackdrop>
   );
 }

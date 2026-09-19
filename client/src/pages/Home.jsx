@@ -200,23 +200,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust bar */}
-      <section className="border-y border-ink-100 bg-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:grid-cols-4 sm:px-6 lg:px-8">
-          {[
-            { value: '500+', label: 'Verified listings' },
-            { value: '3', label: 'Cities covered' },
-            { value: '1,200+', label: 'Students matched' },
-            { value: '4.6★', label: 'Average rating' },
-          ].map((s) => (
-            <div key={s.label} className="text-center">
-              <p className="font-display text-2xl font-extrabold text-ink-900">{s.value}</p>
-              <p className="mt-0.5 text-xs font-medium text-ink-500">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Featured listings */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-end justify-between">

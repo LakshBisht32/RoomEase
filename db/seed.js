@@ -378,7 +378,7 @@ async function seed() {
   await upsertRoommateProfile(riya, { collegeId: DU, budgetMin: 7000, budgetMax: 10000, habits: 'Early riser, tidy', bio: 'Journalism student with a small cat — pet-friendly flatmates only.' });
 
   const doc = '/img/demo/id-doc.svg';
-  await addKycDocument({ userId: rohit, docType: 'aadhaar', filePath: doc, ocrName: 'Rohit Kumar', ocrDob: '2003-04-12', status: 'pending' });
+  await addKycDocument({ userId: rohit, docType: 'aadhaar', filePath: doc, ocrName: 'Rohit Kumar', ocrDob: '2003-04-12', status: 'verified', verifiedBy: 1 });
   await addKycDocument({ userId: ananya, docType: 'college_id', filePath: doc, ocrName: 'Ananya Das', ocrDob: '2002-11-03', status: 'verified', verifiedBy: 1 });
   await addKycDocument({ userId: karan, docType: 'aadhaar', filePath: doc, ocrName: 'Karan Mehta', ocrDob: '2001-07-22', status: 'rejected', rejectionReason: 'Document photo unclear, please reupload.', verifiedBy: 1 });
   await addKycDocument({ userId: sneha, docType: 'passport', filePath: doc, ocrName: 'Sneha Reddy', ocrDob: '2000-09-15', status: 'pending' });

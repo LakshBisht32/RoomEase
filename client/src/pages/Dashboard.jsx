@@ -218,12 +218,19 @@ function StudentDashboard() {
             <div className="space-y-1.5">
               {connections.filter((c) => c.status === 'accepted').map((c) => {
                 const other = c.requester_id === user.id
-                  ? { name: c.receiver_name, email: c.receiver_email }
-                  : { name: c.requester_name, email: c.requester_email };
+                  ? { name: c.receiver_name, email: c.receiver_email, phone: c.receiver_phone }
+                  : { name: c.requester_name, email: c.requester_email, phone: c.requester_phone };
                 return (
                   <div key={c.id} className="flex items-center justify-between text-sm">
                     <span className="font-medium text-ink-700">{other.name}</span>
-                    <span className="text-xs text-ink-400">{other.email}</span>
+                    <div className="flex flex-col items-end">
+                      <span className="text-xs text-ink-400">{other.email}</span>
+                      {other.phone && (
+                        <a href={`tel:${other.phone}`} className="text-xs font-medium text-brand-600 hover:underline">
+                          {other.phone}
+                        </a>
+                      )}
+                    </div>
                   </div>
                 );
               })}

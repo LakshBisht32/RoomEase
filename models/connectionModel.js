@@ -39,8 +39,8 @@ async function updateStatus(id, status, receiverId) {
 async function findForUser(userId) {
   const { rows } = await pool.query(
     `SELECT c.*,
-       ru.name AS requester_name, ru.email AS requester_email,
-       rv.name AS receiver_name, rv.email AS receiver_email
+       ru.name AS requester_name, ru.email AS requester_email, ru.phone AS requester_phone,
+       rv.name AS receiver_name, rv.email AS receiver_email, rv.phone AS receiver_phone
      FROM connections c
      JOIN users ru ON ru.id = c.requester_id
      JOIN users rv ON rv.id = c.receiver_id
