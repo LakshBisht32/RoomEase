@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Users, Wallet, UserPlus, ShieldAlert } from 'lucide-react';
+import { Users, Wallet, UserPlus, ShieldAlert, GraduationCap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { browseRoommates, saveRoommateProfile, getMyRoommateProfile } from '../api/roommates';
 import { sendConnectionRequest } from '../api/connections';
 import { fetchFilterOptions } from '../api/search';
-import { Label, Input, Select, Textarea, FieldError } from '../components/ui/Field';
+import { Label, Input, Textarea, FieldError } from '../components/ui/Field';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
+import CollegeCombobox from '../components/ui/CollegeCombobox';
 import { formatINR } from '../utils/format';
 import { extractErrorMessage } from '../api/client';
 import { Link } from 'react-router-dom';
 import PageBackdrop from '../components/ui/PageBackdrop';
+
+function addCollegeSorted(colleges, college) {
+  if (colleges.some((c) => c.id === college.id)) return colleges;
+  return [...colleges, college].sort((a, b) => a.name.localeCompare(b.name));
+}
 
 function BrowseTab() {
   const [colleges, setColleges] = useState([]);
@@ -47,12 +53,37 @@ function BrowseTab() {
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap gap-3">
-        <Select value={collegeId} onChange={(e) => setCollegeId(e.target.value)} className="w-56">
-          <option value="">Any college</option>
-          {colleges.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-        </Select>
-        <Input type="number" placeholder="Max budget" value={maxBudget} onChange={(e) => setMaxBudget(e.target.value)} className="w-40" />
+      <div className="mb-6 flex flex-wrap items-end gap-4 rounded-xl border border-ink-200 bg-white p-4">
+        <div className="w-56">
+          <Label htmlFor="browse-college">College</Label>
+          <div className="relative">
+            <GraduationCap size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
+            <CollegeCombobox
+              id="browse-college"
+              colleges={colleges}
+              value={collegeId}
+              onChange={(e) => setCollegeId(e.target.value)}
+              placeholder="Any college"
+              allowCreate={false}
+              className="pl-9"
+            />
+          </div>
+        </div>
+        <div className="w-40">
+          <Label htmlFor="browse-budget">Max budget</Label>
+          <div className="relative">
+            <Wallet size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
+            <Input
+              id="browse-budget"
+              type="number"
+              min="0"
+              placeholder="Any"
+              value={maxBudget}
+              onChange={(e) => setMaxBudget(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+        </div>
       </div>
 
       {loading ? (
@@ -125,20 +156,38 @@ function ProfileTab() {
   return (
     <form onSubmit={handleSubmit} className="max-w-lg space-y-4 rounded-xl border border-ink-200 bg-white p-5">
       <div>
+        <p className="font-display text-base font-bold text-ink-900">Your roommate profile</p>
+        <p className="mt-0.5 text-xs text-ink-500">This is what other students see when they browse.</p>
+      </div>
+      <div>
         <Label htmlFor="collegeId">College</Label>
-        <Select id="collegeId" value={form.collegeId} onChange={(e) => setForm({ ...form, collegeId: e.target.value })}>
-          <option value="">Select your college</option>
-          {colleges.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-        </Select>
+        <div className="relative">
+          <GraduationCap size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
+          <CollegeCombobox
+            id="collegeId"
+            colleges={colleges}
+            value={form.collegeId}
+            onChange={(e) => setForm({ ...form, collegeId: e.target.value })}
+            onCollegeCreated={(college) => setColleges((prev) => addCollegeSorted(prev, college))}
+            placeholder="Search or add your college…"
+            className="pl-9"
+          />
+        </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="budgetMin">Min budget (₹)</Label>
-          <Input id="budgetMin" type="number" min="0" value={form.budgetMin} onChange={(e) => setForm({ ...form, budgetMin: e.target.value })} />
+          <div className="relative">
+            <Wallet size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
+            <Input id="budgetMin" type="number" min="0" className="pl-9" value={form.budgetMin} onChange={(e) => setForm({ ...form, budgetMin: e.target.value })} />
+          </div>
         </div>
         <div>
           <Label htmlFor="budgetMax">Max budget (₹)</Label>
-          <Input id="budgetMax" type="number" min="0" value={form.budgetMax} onChange={(e) => setForm({ ...form, budgetMax: e.target.value })} />
+          <div className="relative">
+            <Wallet size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
+            <Input id="budgetMax" type="number" min="0" className="pl-9" value={form.budgetMax} onChange={(e) => setForm({ ...form, budgetMax: e.target.value })} />
+          </div>
         </div>
       </div>
       <div>

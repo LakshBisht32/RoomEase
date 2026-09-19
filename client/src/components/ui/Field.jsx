@@ -3,7 +3,7 @@ import { Check, ChevronDown } from 'lucide-react';
 
 export function Label({ children, htmlFor }) {
   return (
-    <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-medium text-ink-700">
+    <label htmlFor={htmlFor} className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-ink-500">
       {children}
     </label>
   );

@@ -4,6 +4,7 @@ const router = express.Router();
 router.use('/auth', require('./auth'));
 router.use('/kyc', require('./kyc'));
 router.use('/search', require('./search'));
+router.use('/colleges', require('./colleges'));
 router.use('/roommates', require('./roommates'));
 router.use('/connections', require('./connections'));
 router.use('/listing-requests', require('./listing-requests'));
