@@ -1,4 +1,5 @@
 const listingModel = require('../models/listingModel');
+const listingRequestModel = require('../models/listingRequestModel');
 const AppError = require('../utils/AppError');
 
 // Multer/Express turn repeated form fields (e.g. multiple amenityIds
@@ -39,10 +40,29 @@ async function createListing({ ownerId, body, files }) {
   });
 }
 
-async function getListing(id) {
+// owner_phone comes back from listingModel.findById() unconditionally (it's
+// a plain join), so it's stripped here unless the viewer has earned it: the
+// owner themself, or a student whose contact request was accepted. This is
+// also where the viewer's own request status is looked up, so the frontend
+// knows whether to show "Request contact", "Pending" or the revealed number.
+async function getListing(id, viewer) {
   const listing = await listingModel.findById(id);
   if (!listing) throw new AppError('Listing not found.', 404);
-  return listing;
+
+  const isOwner = Boolean(viewer) && viewer.role === 'owner' && viewer.id === listing.owner_id;
+  let myRequestStatus = null;
+  let canSeePhone = isOwner;
+
+  if (!isOwner && viewer && viewer.role === 'student') {
+    const existing = await listingRequestModel.findByListingAndStudent(id, viewer.id);
+    if (existing) {
+      myRequestStatus = existing.status;
+      canSeePhone = existing.status === 'accepted';
+    }
+  }
+
+  if (!canSeePhone) delete listing.owner_phone;
+  return { listing, myRequestStatus };
 }
 
 async function getOwnerListings(ownerId) {

@@ -6,6 +6,7 @@ router.use('/kyc', require('./kyc'));
 router.use('/search', require('./search'));
 router.use('/roommates', require('./roommates'));
 router.use('/connections', require('./connections'));
+router.use('/listing-requests', require('./listing-requests'));
 router.use('/admin', require('./admin'));
 // Mounted before the general /listings router so a path like
 // /listings/5/reviews is matched here (more specific) rather than being

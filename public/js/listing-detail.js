@@ -29,12 +29,44 @@ $(function () {
     );
   }
 
+  function contactSectionHtml(l, myRequestStatus, userRole) {
+    if (userRole === 'owner') return ''; // owners don't request contact on other listings via this flow
+    if (!loggedIn) {
+      return '<p class="card-meta"><a href="/login">Log in</a> to request the owner\'s contact info.</p>';
+    }
+    if (l.owner_phone) {
+      return (
+        '<div class="form-card" style="margin-top:1rem;">' +
+          '<strong>Owner accepted your request</strong>' +
+          '<p class="card-meta">Call/WhatsApp: ' + escapeHtml(l.owner_phone) + '</p>' +
+        '</div>'
+      );
+    }
+    if (myRequestStatus === 'pending') {
+      return '<p class="card-meta">Request sent — waiting for the owner to respond.</p>';
+    }
+    if (myRequestStatus === 'rejected') {
+      return '<p class="card-meta">The owner declined your request.</p>';
+    }
+    return (
+      '<div class="form-card" style="margin-top:1rem;">' +
+        '<form id="contact-request-form">' +
+          '<div class="field"><label for="contact-message">Message (optional)</label>' +
+            '<textarea id="contact-message" name="message" rows="2" maxlength="500" placeholder="e.g. Looking to move in October"></textarea></div>' +
+          '<div class="form-error" id="contact-request-error"></div>' +
+          '<button type="submit" class="btn-pill">Request contact info</button>' +
+        '</form>' +
+      '</div>'
+    );
+  }
+
   function render(data) {
     const l = data.listing;
     const images = (l.images || []).length ? l.images : ['/img/placeholder.svg'];
     const amenities = (l.amenities || []).map((a) => '<span class="chip">' + escapeHtml(a) + '</span>').join('');
     const colleges = (l.colleges || []).map((c) => '<span class="chip">' + escapeHtml(c.name) + '</span>').join('');
     const rating = l.avg_rating ? starString(l.avg_rating) + ' (' + l.avg_rating + ' avg)' : 'No reviews yet';
+    const userRole = $('#listing-page').data('user-role');
 
     let html = '';
     html += '<div class="gallery">' + images.map((src) => '<img src="' + escapeHtml(src) + '" alt="" />').join('') + '</div>';
@@ -45,11 +77,27 @@ $(function () {
     html += '<div class="chip-row">' + amenities + '</div>';
     html += '<h3>Near</h3><div class="chip-row">' + (colleges || '<p>Not linked to a college yet.</p>') + '</div>';
     html += '<p>' + escapeHtml(l.description || '') + '</p>';
-    html += '<p class="card-meta">Listed by ' + escapeHtml(l.owner_name) + (l.owner_phone ? ' · ' + escapeHtml(l.owner_phone) : '') + '</p>';
+    html += '<p class="card-meta">Listed by ' + escapeHtml(l.owner_name) + '</p>';
+    html += contactSectionHtml(l, data.myRequestStatus, userRole);
     html += '<h3>Reviews</h3><div id="reviews-list">' + (data.reviews.length ? data.reviews.map(renderReview).join('') : '<p>No reviews yet.</p>') + '</div>';
     html += reviewFormHtml();
 
     $('#listing-content').html(html);
+
+    $('#contact-request-form').on('submit', function (e) {
+      e.preventDefault();
+      $('#contact-request-error').text('');
+      apiRequest({
+        url: '/api/v1/listing-requests',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ listingId: listingId, message: $('#contact-message').val() }),
+      }).done(function () {
+        load();
+      }).fail(function (xhr) {
+        $('#contact-request-error').text(xhr.friendlyMessage);
+      });
+    });
 
     $('#review-form').on('submit', function (e) {
       e.preventDefault();

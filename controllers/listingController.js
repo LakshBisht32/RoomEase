@@ -8,9 +8,9 @@ const create = asyncHandler(async (req, res) => {
 });
 
 const getOne = asyncHandler(async (req, res) => {
-  const listing = await listingService.getListing(req.params.id);
+  const { listing, myRequestStatus } = await listingService.getListing(req.params.id, req.user);
   const reviews = await reviewModel.findByListing(req.params.id);
-  res.json({ listing, reviews });
+  res.json({ listing, reviews, myRequestStatus });
 });
 
 const myListings = asyncHandler(async (req, res) => {

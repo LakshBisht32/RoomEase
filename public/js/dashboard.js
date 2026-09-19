@@ -36,7 +36,8 @@ $(function () {
         ? '<div class="grid">' + res.listings.map(renderOwnerListing).join('') + '</div>'
         : '<div class="empty-state">No listings yet. <a href="/listings/new">Create your first one</a>.</div>';
       $('#dashboard-content').html(
-        '<div class="section-title"><h3>My listings</h3><a href="/listings/new" class="btn-pill small">+ New listing</a></div>' + html
+        '<div class="section-title"><h3>My listings</h3><a href="/listings/new" class="btn-pill small">+ New listing</a></div>' + html +
+        '<div class="form-card wide" style="margin-top:1.5rem;"><h3>Contact requests</h3><div id="listing-requests-list"><p>Loading…</p></div></div>'
       );
 
       $('.toggle-status').on('click', function () {
@@ -48,6 +49,47 @@ $(function () {
         if (!confirm('Delete this listing?')) return;
         const id = $(this).data('id');
         apiRequest({ url: '/api/v1/listings/' + id, method: 'DELETE' }).done(loadOwnerDashboard);
+      });
+
+      loadOwnerListingRequests();
+    });
+  }
+
+  function renderOwnerListingRequest(r) {
+    let actions = '';
+    if (r.status === 'pending') {
+      actions =
+        '<button class="btn-pill small respond-listing-request" data-id="' + r.id + '" data-decision="accepted">Accept</button> ' +
+        '<button class="btn-pill small outline respond-listing-request" data-id="' + r.id + '" data-decision="rejected">Reject</button>';
+    } else if (r.status === 'accepted') {
+      actions = '<span class="card-meta">Contact: ' + escapeHtml(r.student_phone || '') + '</span>';
+    }
+    return (
+      '<div class="review">' +
+        '<strong>' + escapeHtml(r.student_name) + '</strong> — <em>' + escapeHtml(r.listing_title) + '</em>' +
+        ' <span class="' + badgeClass(r.status) + '">' + r.status + '</span>' +
+        (r.message ? '<p class="card-meta">"' + escapeHtml(r.message) + '"</p>' : '') +
+        '<div>' + actions + '</div>' +
+      '</div>'
+    );
+  }
+
+  function loadOwnerListingRequests() {
+    apiRequest({ url: '/api/v1/listing-requests', method: 'GET' }).done(function (res) {
+      if (!res.requests.length) {
+        $('#listing-requests-list').html('<p>No contact requests yet.</p>');
+        return;
+      }
+      $('#listing-requests-list').html(res.requests.map(renderOwnerListingRequest).join(''));
+      $('.respond-listing-request').on('click', function () {
+        const id = $(this).data('id');
+        const decision = $(this).data('decision');
+        apiRequest({
+          url: '/api/v1/listing-requests/' + id + '/respond',
+          method: 'PATCH',
+          contentType: 'application/json',
+          data: JSON.stringify({ decision }),
+        }).done(loadOwnerListingRequests);
       });
     });
   }
@@ -69,12 +111,36 @@ $(function () {
     );
   }
 
+  function renderStudentListingRequest(r) {
+    let status = '<span class="' + badgeClass(r.status) + '">' + r.status + '</span>';
+    if (r.status === 'accepted' && r.owner_phone) {
+      status += ' <span class="card-meta">Owner (' + escapeHtml(r.owner_name) + '): ' + escapeHtml(r.owner_phone) + '</span>';
+    }
+    return (
+      '<div class="review">' +
+        '<strong>' + escapeHtml(r.listing_title) + '</strong> — ' + status +
+      '</div>'
+    );
+  }
+
+  function loadStudentListingRequests() {
+    apiRequest({ url: '/api/v1/listing-requests', method: 'GET' }).done(function (res) {
+      if (!res.requests.length) {
+        $('#listing-requests-list').html('<p>No contact requests sent yet. Find a PG and request the owner\'s contact info.</p>');
+        return;
+      }
+      $('#listing-requests-list').html(res.requests.map(renderStudentListingRequest).join(''));
+    });
+  }
+
   function loadStudentDashboard(myId) {
     $('#dashboard-content').html(
       '<div class="form-card wide"><h3>Roommate profile</h3><div id="profile-summary"><p>Loading…</p></div>' +
       '<a href="/roommates" class="btn-pill small">Edit / browse roommates</a></div>' +
-      '<div class="form-card wide" style="margin-top:1.5rem;"><h3>Connections</h3><div id="connections-list"><p>Loading…</p></div></div>'
+      '<div class="form-card wide" style="margin-top:1.5rem;"><h3>Connections</h3><div id="connections-list"><p>Loading…</p></div></div>' +
+      '<div class="form-card wide" style="margin-top:1.5rem;"><h3>PG contact requests</h3><div id="listing-requests-list"><p>Loading…</p></div></div>'
     );
+    loadStudentListingRequests();
 
     apiRequest({ url: '/api/v1/roommates/profile/me', method: 'GET' }).done(function (res) {
       if (!res.profile) {
