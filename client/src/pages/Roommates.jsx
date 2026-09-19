@@ -13,6 +13,7 @@ import EmptyState from '../components/ui/EmptyState';
 import { formatINR } from '../utils/format';
 import { extractErrorMessage } from '../api/client';
 import { Link } from 'react-router-dom';
+import PageBackdrop from '../components/ui/PageBackdrop';
 
 function BrowseTab() {
   const [colleges, setColleges] = useState([]);
@@ -160,54 +161,62 @@ export default function Roommates() {
 
   if (!user) {
     return (
-      <div className="mx-auto max-w-lg px-4 py-24 text-center">
-        <Users size={36} className="mx-auto text-ink-300" />
-        <h1 className="mt-3 font-display text-xl font-bold text-ink-900">Log in to find your roomies</h1>
-        <Button as={Link} to="/login" className="mt-5">Log in</Button>
-      </div>
+      <PageBackdrop className="min-h-[calc(100vh-64px)]">
+        <div className="mx-auto max-w-lg px-4 py-24 text-center">
+          <Users size={36} className="mx-auto text-ink-300" />
+          <h1 className="mt-3 font-display text-xl font-bold text-ink-900">Log in to find your roomies</h1>
+          <Button as={Link} to="/login" className="mt-5">Log in</Button>
+        </div>
+      </PageBackdrop>
     );
   }
 
   if (user.role !== 'student') {
     return (
-      <div className="mx-auto max-w-lg px-4 py-24 text-center">
-        <ShieldAlert size={36} className="mx-auto text-ink-300" />
-        <p className="mt-3 font-semibold text-ink-700">Roommate matching is available for student accounts only.</p>
-      </div>
+      <PageBackdrop className="min-h-[calc(100vh-64px)]">
+        <div className="mx-auto max-w-lg px-4 py-24 text-center">
+          <ShieldAlert size={36} className="mx-auto text-ink-300" />
+          <p className="mt-3 font-semibold text-ink-700">Roommate matching is available for student accounts only.</p>
+        </div>
+      </PageBackdrop>
     );
   }
 
   if (user.kyc_status !== 'verified') {
     return (
-      <div className="mx-auto max-w-lg px-4 py-24 text-center">
-        <ShieldAlert size={36} className="mx-auto text-amber-500" />
-        <h1 className="mt-3 font-display text-xl font-bold text-ink-900">Verify your KYC first</h1>
-        <p className="mt-2 text-sm text-ink-500">Roommate matching requires a verified account for everyone's safety.</p>
-        <Button as={Link} to="/kyc" className="mt-5">Complete KYC</Button>
-      </div>
+      <PageBackdrop className="min-h-[calc(100vh-64px)]">
+        <div className="mx-auto max-w-lg px-4 py-24 text-center">
+          <ShieldAlert size={36} className="mx-auto text-amber-500" />
+          <h1 className="mt-3 font-display text-xl font-bold text-ink-900">Verify your KYC first</h1>
+          <p className="mt-2 text-sm text-ink-500">Roommate matching requires a verified account for everyone's safety.</p>
+          <Button as={Link} to="/kyc" className="mt-5">Complete KYC</Button>
+        </div>
+      </PageBackdrop>
     );
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="font-display text-2xl font-extrabold text-ink-900">Find Your Roomies</h1>
-      <p className="mt-1 text-sm text-ink-500">Match with students near your college who share your budget.</p>
+    <PageBackdrop className="min-h-[calc(100vh-64px)]">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+        <h1 className="font-display text-2xl font-extrabold text-ink-900">Find Your Roomies</h1>
+        <p className="mt-1 text-sm text-ink-500">Match with students near your college who share your budget.</p>
 
-      <div className="mt-5 flex gap-1 rounded-lg bg-ink-100 p-1 w-fit">
-        {[{ id: 'browse', label: 'Browse' }, { id: 'profile', label: 'My Profile' }].map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={`rounded-md px-4 py-1.5 text-sm font-semibold transition ${tab === t.id ? 'bg-white text-brand-700 shadow-sm' : 'text-ink-500'}`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
+        <div className="mt-5 flex gap-1 rounded-lg bg-ink-100 p-1 w-fit">
+          {[{ id: 'browse', label: 'Browse' }, { id: 'profile', label: 'My Profile' }].map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`rounded-md px-4 py-1.5 text-sm font-semibold transition ${tab === t.id ? 'bg-white text-brand-700 shadow-sm' : 'text-ink-500'}`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
 
-      <div className="mt-6">
-        {tab === 'browse' ? <BrowseTab /> : <ProfileTab />}
+        <div className="mt-6">
+          {tab === 'browse' ? <BrowseTab /> : <ProfileTab />}
+        </div>
       </div>
-    </div>
+    </PageBackdrop>
   );
 }
