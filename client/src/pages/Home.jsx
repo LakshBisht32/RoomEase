@@ -7,6 +7,7 @@ import {
 import ListingCard from '../components/listings/ListingCard';
 import ListingCardSkeleton from '../components/listings/ListingCardSkeleton';
 import Button from '../components/ui/Button';
+import { Select } from '../components/ui/Field';
 import { searchListings, fetchFilterOptions } from '../api/search';
 
 const CATEGORIES = [
@@ -120,18 +121,20 @@ export default function Home() {
                 </datalist>
               </div>
               <div className="h-px w-full bg-ink-100 sm:h-8 sm:w-px" />
-              <select
-                value={propertyType}
-                onChange={(e) => setPropertyType(e.target.value)}
-                className="rounded-xl bg-transparent px-3 py-3 text-sm text-ink-700 outline-none sm:w-36"
-              >
-                <option value="">Any type</option>
-                <option value="pg">PG</option>
-                <option value="flat">Flat</option>
-                <option value="hostel">Hostel</option>
-                <option value="studio">Studio</option>
-                <option value="room">Single Room</option>
-              </select>
+              <div className="sm:w-40">
+                <Select
+                  value={propertyType}
+                  onChange={(e) => setPropertyType(e.target.value)}
+                  className="!rounded-xl !border-0 !bg-transparent !px-3 !py-3 !text-sm !text-ink-700 !shadow-none focus:!ring-0"
+                >
+                  <option value="">Any type</option>
+                  <option value="pg">PG</option>
+                  <option value="flat">Flat</option>
+                  <option value="hostel">Hostel</option>
+                  <option value="studio">Studio</option>
+                  <option value="room">Single Room</option>
+                </Select>
+              </div>
               <div className="h-px w-full bg-ink-100 sm:h-8 sm:w-px" />
               <div className="relative sm:w-36">
                 <Wallet size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" />
