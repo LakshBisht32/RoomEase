@@ -1,9 +1,9 @@
-databases:
-  - name: roomease-db
-    plan: free
-    databaseName: roomease
-    user: roomease
-
+# No `databases:` block here on purpose — Render's free plan allows only one
+# free Postgres instance per account. This blueprint instead reuses whatever
+# free Postgres instance an existing project already created, and points
+# DB_NAME at a new, separate database ("roomease") inside that same instance.
+# db/migrate.js already creates that database automatically on first deploy
+# if it doesn't exist yet, so no manual `CREATE DATABASE` step is needed.
 services:
   # Express API
   - type: web
@@ -24,26 +24,22 @@ services:
       # Must match the client service's actual URL below (see notes in README/chat).
       - key: CLIENT_ORIGIN
         value: https://roomease-client.onrender.com
+      # Fill these in during "New Blueprint" from your EXISTING Postgres
+      # instance's Info page (use the Internal Hostname if both services are
+      # in the same Render region — faster, and doesn't count against
+      # egress bandwidth).
       - key: DB_HOST
-        fromDatabase:
-          name: roomease-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: roomease-db
-          property: port
+        sync: false
       - key: DB_USER
-        fromDatabase:
-          name: roomease-db
-          property: user
+        sync: false
       - key: DB_PASSWORD
-        fromDatabase:
-          name: roomease-db
-          property: password
+        sync: false
+      - key: DB_PORT
+        value: 5432
+      # A separate database inside the shared instance — not the other
+      # project's database name.
       - key: DB_NAME
-        fromDatabase:
-          name: roomease-db
-          property: database
+        value: roomease
 
   # React (Vite) static site
   - type: web
