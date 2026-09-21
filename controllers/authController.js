@@ -4,13 +4,20 @@ const asyncHandler = require('../middleware/asyncHandler');
 
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
 
+// In production the client and API are on two different Render domains, so
+// the cookie is cross-site — that requires SameSite=None, which in turn
+// requires Secure (browsers reject None without it). Locally both run on
+// localhost with different ports, which the (same-site) Lax policy still
+// allows.
+const isProduction = process.env.NODE_ENV === 'production';
+const COOKIE_OPTIONS = {
+  httpOnly: true, // client-side JS can never read this cookie
+  sameSite: isProduction ? 'none' : 'lax',
+  secure: isProduction, // HTTPS-only outside local dev
+};
+
 function setAuthCookie(res, token) {
-  res.cookie('token', token, {
-    httpOnly: true, // client-side JS can never read this cookie
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production', // HTTPS-only outside local dev
-    maxAge: COOKIE_MAX_AGE,
-  });
+  res.cookie('token', token, { ...COOKIE_OPTIONS, maxAge: COOKIE_MAX_AGE });
 }
 
 const signup = asyncHandler(async (req, res) => {
@@ -28,7 +35,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const logout = (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('token', COOKIE_OPTIONS);
   res.status(200).json({ message: 'Logged out' });
 };
 

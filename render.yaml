@@ -1,0 +1,65 @@
+databases:
+  - name: roomease-db
+    plan: free
+    databaseName: roomease
+    user: roomease
+
+services:
+  # Express API
+  - type: web
+    name: roomease-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    # Migrations are safe to re-run (schema_migrations tracks what already applied),
+    # so running them before every start keeps the DB in sync with each deploy.
+    startCommand: npm run migrate && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      # Must match the client service's actual URL below (see notes in README/chat).
+      - key: CLIENT_ORIGIN
+        value: https://roomease-client.onrender.com
+      - key: DB_HOST
+        fromDatabase:
+          name: roomease-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: roomease-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: roomease-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: roomease-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: roomease-db
+          property: database
+
+  # React (Vite) static site
+  - type: web
+    name: roomease-client
+    runtime: static
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      # Baked into the bundle at build time — must match the API service's
+      # actual URL above.
+      - key: VITE_API_URL
+        value: https://roomease-api.onrender.com/api/v1
+    routes:
+      # Client-side routing (React Router) — unknown paths must still serve
+      # index.html instead of a static 404.
+      - type: rewrite
+        source: /*
+        destination: /index.html
