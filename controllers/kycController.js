@@ -18,6 +18,7 @@ const submit = asyncHandler(async (req, res) => {
     docType,
     docNumber,
     filePath: relativePath,
+    absolutePath: req.file.path,
     mimetype: req.file.mimetype,
   });
 

@@ -39,7 +39,9 @@ function nameAppearsInText(profileName, text) {
   return matchedCount / nameTokens.length >= NAME_MATCH_THRESHOLD;
 }
 
-async function submitDocument({ userId, profileName, docType, docNumber, filePath, mimetype }) {
+// filePath is the public URL path stored in the DB; absolutePath is where the
+// file actually sits on disk, which is what OCR needs to read it.
+async function submitDocument({ userId, profileName, docType, docNumber, filePath, absolutePath, mimetype }) {
   const flags = [];
   let ocrRawText = null;
   let ocrName = null;
@@ -47,7 +49,7 @@ async function submitDocument({ userId, profileName, docType, docNumber, filePat
 
   if (mimetype.startsWith('image/')) {
     try {
-      ocrRawText = await ocrService.extractText(filePath);
+      ocrRawText = await ocrService.extractText(absolutePath);
       ocrDob = ocrService.extractDob(ocrRawText);
 
       const nameMatches = nameAppearsInText(profileName, ocrRawText);
